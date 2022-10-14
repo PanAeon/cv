@@ -1,0 +1,572 @@
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2019 Jan Küster
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+
+
+%we use article class because we want to fully customize the page and don't use a cv template
+\documentclass[10pt,a4paper]{article}	
+
+
+
+% we use utf8 since we want to build from any machine
+%\usepackage[utf8]{inputenc}		
+
+
+% provides \isempty test
+\usepackage{xstring, xifthen}
+
+\ifdefined\phonenumber
+\else
+  \def\phonenumber{+380 \_\_ \_\_\_ \_\_ \_\_}
+\fi
+
+
+%----------------------------------------------------------------------------------------
+%	FONTS
+%----------------------------------------------------------------------------------------
+
+
+%\usepackage[defaultsans]{droidsans}
+%\usepackage[default]{comfortaa}
+%\usepackage{cmbright}
+%\usepackage[default]{raleway}
+%\usepackage{fetamont}
+%\usepackage[default]{gillius}
+%\usepackage[light,math]{iwona}
+%\usepackage[thin]{roboto} 
+\usepackage{fontspec}
+\usepackage[light, defaultfam, semibold]{montserrat}
+
+%% use fc-list to find font name
+%% cartograph looks really good, but also a bit silly
+%% the difference between Helvetica and Montserrat is minimal, also looks very good
+
+%%\fontspec{Cartograph Mono CF}
+%%\setmainfont{Cartograph Mono CF}
+%%\setsansfont{Cartograph Mono CF}
+
+%\setmainfont{\mono}
+%\defaultfontfeatures{Ligatures=TeX} % To support LaTeX quoting style
+%\newfontfamily\headerfont{Iosevka}
+%\setmainfont{Comic Mono}
+%[
+%  UprightFont = *-regular,
+%  BoldFont = *-bold,
+%  ItalicFont = *-italic,
+%  BoldItalicFont = *-bolditalic,
+%  ]
+%\setsansfont{Iosevka}
+%\setmonofont{Iosevka}
+%\usepackage{microtype} letter spacing doesn't work with xetex...
+%\setmainfont{montserrat}[LetterSpace=50]
+
+% set font default ??
+\renewcommand*\familydefault{\sfdefault} 	
+%\usepackage[T1]{fontenc}
+
+% provides HUGE
+\usepackage[10pt]{moresize}
+
+
+\usepackage{fontawesome5}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand{\vcenteredinclude}[1]{\begingroup
+\setbox0=\hbox{\includegraphics{#1}}%
+\parbox{\wd0}{\box0}\endgroup}
+
+% use to vertically center content
+% credits to: http://tex.stackexchange.com/questions/7219/how-to-vertically-center-two-images-next-to-each-other
+\newcommand*{\vcenteredhbox}[1]{\begingroup
+\setbox0=\hbox{#1}\parbox{\wd0}{\box0}\endgroup}
+
+% icon shortcut
+\newcommand{\icon}[3] { 							
+	\makebox(#2, #2){\textcolor{darkcol}{\csname fa#1\endcsname}}
+}	
+
+\newcommand{\icontext}[4]{ 						
+	\vcenteredhbox{\icon{#1}{#2}{#3}}  \hspace{2pt}  \parbox{0.9\mpwidth}{\textcolor{#4}{#3}}
+}
+
+\newcommand{\iconhref}[5]{ 						
+    \vcenteredhbox{\icon{#1}{#2}{#5}}  \hspace{2pt} \href{#4}{\textcolor{#5}{#3}}
+}
+
+\newcommand{\iconemail}[5]{ 						
+    \vcenteredhbox{\icon{#1}{#2}{#5}}  \hspace{2pt} \href{mailto:#4}{\textcolor{#5}{#3}}
+}
+
+
+
+% page outer frames (debug-only)
+% \usepackage{showframe}		
+
+% we use paracol to display breakable two columns
+\usepackage{paracol}
+
+% define page styles using geometry
+\usepackage[a4paper]{geometry}
+
+% remove all possible margins
+\geometry{top=1cm, bottom=1cm, left=1cm, right=1cm}
+
+\usepackage{fancyhdr}
+\pagestyle{empty}
+
+% space between header and content
+% \setlength{\headheight}{0pt}
+
+% indentation is zero
+\setlength{\parindent}{0mm}
+
+%\setlength\fboxrule{1.5pt}
+%\setlength\fboxsep{1.5pt}
+
+
+% extended aligning of tabular cells
+\usepackage{array}
+
+% custom column right-align with fixed width
+% use like p{size} but via x{size}
+\newcolumntype{x}[1]{%
+>{\raggedleft\hspace{0pt}}p{#1}}%
+
+
+
+%for header image
+\usepackage{graphicx}
+
+% use this for floating figures
+% \usepackage{wrapfig}
+% \usepackage{float}
+% \floatstyle{boxed} 
+% \restylefloat{figure}
+
+%for drawing graphics		
+\usepackage{tikz}				
+\usetikzlibrary{shapes, backgrounds,mindmap, trees}
+
+\usepackage{transparent}
+\usepackage{color}
+
+\definecolor{darkcol}{HTML}{1e2323}
+\definecolor{lightcol}{RGB}{245,245,245}
+
+
+
+% returns minipage width minus two times \fboxsep
+% to keep padding included in width calculations
+% can also be used for other boxes / environments
+\newcommand{\mpwidth}{\linewidth-\fboxsep-\fboxsep}
+
+
+
+
+% renders a standard latex list but abstracts away the environment definition (begin/end)
+\newcommand{\cvlist}[1] {
+	\begin{itemize}{#1}\end{itemize}
+}
+
+
+% base class to wrap any text based stuff here. Renders like a paragraph.
+% Allows complex commands to be passed, too.
+% param 1: *any
+\newcommand{\cvtext}[1] {
+	\begin{tabular*}{1\mpwidth}{p{0.98\mpwidth}}
+		\parbox{1\mpwidth}{#1}
+	\end{tabular*}
+}
+
+% Renders a a CV section headline with a nice underline in main color.
+% param 1: section title
+\newcommand{\cvsection}[1] {
+	\vspace{18pt}
+	\cvtext{
+    \textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}\\[-2pt]
+		\textcolor{darkcol}{ \rule{0.07\textwidth}{2pt} } \\
+	}
+}
+
+    %%\textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}\\%[-4pt]
+
+    %%\addfontfeature{LetterSpace=25.0}{\textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}}\\%[-4pt]
+
+%% \newcommand{\cvsection}[1] {
+%% 	\vspace{14pt}
+%% 	\cvtext{
+%% 		\textbf{\LARGE{\textcolor{darkcol}{\uppercase{#1}}}}\\[-4pt]
+%% 		\textcolor{darkcol}{ \rule{0.1\textwidth}{2pt} } \\
+%% 	}
+%% }
+
+%----------------------------------------------------------------------------------------
+%	META SKILL
+%----------------------------------------------------------------------------------------
+
+% Renders a progress-bar to indicate a certain skill in percent.
+% param 1: name of the skill / tech / etc.
+% param 2: level (for example in years)
+% param 3: percent, values range from 0 to 1
+\newcommand{\cvskill}[3] {
+	\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+ 		\textcolor{darkcol}{\textbf{#1}} & \textcolor{darkcol}{#2}\\
+	\end{tabular*}%
+	
+	\hspace{4pt}
+	\begin{tikzpicture}[scale=1,rounded corners=2pt,very thin]
+		\fill [lightcol] (0,0) rectangle (1\mpwidth, 0.15);
+		\fill [darkcol] (0,0) rectangle (#3\mpwidth, 0.15);
+  	\end{tikzpicture}%
+}
+% TODO: align right level
+\newcommand{\cvlanguage}[3] {
+	\begin{tabular*}{1\mpwidth}{p{0.6\mpwidth}  r}
+ 		\textcolor{darkcol}{\textbf{#1}} & \textcolor{darkcol}{#2}\\
+	\end{tabular*}%
+	
+	\hspace{4pt}
+	\begin{tikzpicture}[scale=1,rounded corners=2pt,very thin]
+		\fill [lightcol] (0,0) rectangle (1\mpwidth, 0.15);
+		\fill [darkcol] (0,0) rectangle (#3\mpwidth, 0.15);
+  	\end{tikzpicture}%
+}
+
+
+%----------------------------------------------------------------------------------------
+%	 CV EVENT
+%----------------------------------------------------------------------------------------
+
+% Renders a table and a paragraph (cvtext) wrapped in a parbox (to ensure minimum content
+% is glued together when a pagebreak appears).
+% Additional Information can be passed in text or list form (or other environments).
+% the work you did
+% param 1: time-frame i.e. Sep 14 - Jan 15 etc.
+% param 2:	 event name (job position etc.)
+% param 3: Customer, Employer, Industry
+% param 4: Short description
+% param 5: work done (optional)
+% param 6: technologies include (optional)
+% param 7: achievements (optional)
+\newcommand{\cvevent}[7] {
+	
+	% we wrap this part in a parbox, so title and description are not separated on a pagebreak
+	% if you need more control on page breaks, remove the parbox
+	\parbox{\mpwidth}{
+		\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+	 		\textcolor{darkcol}{\textbf{#2}} & {\makebox[0.25\mpwidth]{\textbf{#1}}} \\
+			\textcolor{darkcol}{\textbf{#3}} & \\
+		\end{tabular*}\\[8pt]
+	
+		\ifthenelse{\isempty{#4}}{}{
+			\cvtext{#4}\\
+		}
+	}
+	%\parbox{\mpwidth}{
+	%	\begin{tabular*}{1\mpwidth}{p{0.72\mpwidth}  r}
+	% 		\textcolor{black}{\textbf{#2}} & \colorbox{darkcol}{\makebox[0.25\mpwidth]{\textcolor{white}{#1}}} \\
+	%		\textcolor{darkcol}{\textbf{#3}} & \\
+	%	\end{tabular*}\\[8pt]
+	%
+	%	\ifthenelse{\isempty{#4}}{}{
+	%		\cvtext{#4}\\
+	%	}
+	%}
+
+	\ifthenelse{\isempty{#5}}{}{
+		\vspace{9pt}
+		{#5}
+	}
+
+	\ifthenelse{\isempty{#6}}{}{
+		\vspace{9pt}
+		\cvtext{\textbf{Technologies include:}}\\
+		{#6}
+	}
+
+	\ifthenelse{\isempty{#7}}{}{
+		\vspace{9pt}
+		\cvtext{\textbf{Achievements include:}}\\
+		{#7}
+	}
+	\vspace{14pt}
+}
+
+%----------------------------------------------------------------------------------------
+%	 CV META EVENT
+%----------------------------------------------------------------------------------------
+
+% Renders a CV event on the sidebar
+% param 1: title
+% param 2: subtitle (optional)
+% param 3: customer, employer, etc,. (optional)
+% param 4: info text (optional)
+\newcommand{\cvmetaevent}[4] {
+	\textcolor{darkcol} {\cvtext{\textbf{\begin{flushleft}#1\end{flushleft}}}}
+
+	\ifthenelse{\isempty{#2}}{}{
+	\textcolor{darkcol} {\cvtext{\textbf{#2}} }
+	}
+
+	\ifthenelse{\isempty{#3}}{}{
+		\cvtext{{ \textcolor{darkcol} {#3} }}\\
+	}
+
+	\cvtext{#4}\\[14pt]
+}
+
+%---------------------------------------------------------------------------------------
+%	QR CODE
+%----------------------------------------------------------------------------------------
+
+% Renders a qrcode image (centered, relative to the parentwidth)
+% param 1: percent width, from 0 to 1
+\newcommand{\cvqrcode}[1] {
+	\begin{center}
+		\includegraphics[width={#1}\mpwidth]{qrcode}
+	\end{center}
+}
+
+% XeTeX
+\special{pdf:trailerid [
+    <00112233445566778899aabbccddeeff>
+    <00112233445566778899aabbccddeeff>
+]}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup
+{
+  pdfauthor={Vitalii Voloshyn},
+  pdfsubject={Vitalii Voloshyn's CV},
+  pdftitle={Vitalii Voloshyn's CV},
+  %colorlinks, breaklinks, xetex, bookmarks,
+  %filecolor=black,
+  %urlcolor=[HTML]{linkcolor},
+  %linkcolor=[rgb]{linkcolor},
+  %linkcolor=[rgb]{linkcolor},
+  %citecolor=[rgb]{linkcolor}
+}
+
+%============================================================================%
+%
+%
+%
+%	DOCUMENT CONTENT
+%
+%
+%
+%============================================================================%
+
+\begin{document}
+
+  {\begin{minipage}[t][3.5cm][t]{1\mpwidth}
+    \raggedright
+	%\begin {center}
+		%\HUGE{ \textbf{  \uppercase{ VITALII \\ VOLOSHYN} } }
+		%\HUGE{ \uppercase{ VITALII \\ VOLOSHYN} }
+    \HUGE{ \textbf{\uppercase{ VITALII } }} \\
+    \vspace{-5pt} %% FIXME: set proper line-height, don't add hacks
+    \HUGE{ \textbf{\uppercase{ VOLOSHYN } }} \\
+    \vspace{8pt}
+		% \textcolor{white}{ \rule{0.1\textwidth}{1.25pt} } \\[4pt]
+		\large{ Senior Scala Developer}
+		%\large{ Senior Scala and \LaTeX  \hspace{1.25pt} Developer}
+	%\end {center}
+\end{minipage}} %\\[14pt]
+\vspace{-12pt}
+\par\noindent\textcolor{lightgray}{\rule{\textwidth}{1.0pt}}
+
+\columnratio{0.31}
+\setlength{\columnsep}{2.2em}
+\setlength{\columnseprule}{1pt}
+\colseprulecolor{lightgray}
+\begin{paracol}{2}
+\begin{leftcolumn}
+
+\cvsection{CONTACT}
+	
+\iconemail{Envelope}{12}{vitalii.voloshyn@gmail.com}{vitalii.voloshyn@gmail.com}{black}\\[6pt]
+\icontext{Phone}{12}{\phonenumber}{black}\\[6pt]
+\icontext{MapMarker}{12}{Kyiv, Ukraine}{black}\\[6pt]
+
+%\vfill\null
+
+\cvsection{SKILLS}
+
+\cvskill{Scala} {10+ yrs} {1} \\[-2pt]
+
+\cvskill{Java} {12+ yrs} {1} \\[-2pt]
+
+\cvskill{Spark} {7+ yrs} {0.8} \\[-2pt]
+
+\cvskill{Javascript} {10+ yrs} {0.69} \\[-2pt]
+
+\cvskill{Rust} {2+ yrs} {0.58} \\[-2pt]
+
+\cvskill{SQL} {10+ yrs} {0.81} \\[-2pt]
+
+\cvskill{Nix} {3+ yrs} {0.62} \\[-2pt]
+
+\cvskill{Linux} {10+ yrs} {1} \\[-2pt]
+
+\cvskill{GIT} {10+ yrs} {1} \\[-2pt]
+
+
+
+\vfill\null
+%\cvqrcode{0.7}
+
+\newpage
+\cvsection{EDUCATION}
+
+\cvmetaevent
+{2003 - 2010}
+{M.Sc. Applied Mathematics}
+{Kyiv National University}
+{}
+
+
+\cvsection{LANGUAGES}
+
+\cvlanguage{English} {Advanced} {0.8} \\[-2pt]
+
+\cvlanguage{Ukrainian} {Native} {1} \\[-2pt]
+
+\vfill\null
+\cvsection{Links}
+
+\iconhref{Github}{12}{https://github.com/PanAeon}{https://github.com/PanAeon}{black}\\[6pt]
+
+\cvqrcode{0.7}
+
+\newpage
+
+%\mbox{} % hotfix to place qrcode on the bottom when there are not other elements
+
+\end{leftcolumn}
+
+\begin{rightcolumn}
+
+
+\cvsection{PROFILE}
+
+\cvtext{Technology savvy professional with strong theoretical background
+and passion for OpenSource software.\\
+
+Excellent analytical and problem solving skills. Capable of gathering customer requirements 
+and transforming them into concrete solutions. Experienced with large projects and
+heterogeneous infrastructure.\\
+
+Self disciplined and motivated to produce high quality maintainable software.
+Always interested in working with latest technologies and top software practices.\\
+}
+
+\cvsection{WORK EXPERIENCE}
+\cvevent
+	{Dec 19 - Sep 20}
+	{Full Stack developer}
+	{SHINEZ.io}
+	{A leading online advertising company which specializes in serving of high quality content
+  utilizing metric-driven data centric approach. Development is highly customer oriented with 
+  strong emphasis on self sufficiency and ability to produce pragmatic, working solutions}
+	{\cvlist{
+		\item Creation of a web-based workflow automation tools 
+		\item Development and maintenance of data-collection services
+		\item Development of new automation workfows and processes, as well as training and support
+		\item Maintenance of existing infrastructure
+	}}
+	{\cvlist {
+		\item Typescript, Javascript, Python
+    \item HTML5, React, Rest, gRPC
+		\item Postgres, Amazon Redshift, Mongodb
+		\item AWS, Google Cloud, Kubernetes
+	}}
+	{\cvlist{
+		\item Migration of existing services to Kubernetes cluster
+		\item An E2E testing tool tailored for catching regression in existing web services
+		\item Various tools for reporting and automation
+	}}
+
+\vfill\null
+\newpage
+
+\cvevent
+	{Nov 15 - May 19}
+  {Big Data Developer}
+	{EPAM Systems}
+	{Customer consulting both remote and on-site. Working with big data solutions,
+  including close cooperation with data science team.}
+	{\cvlist{
+		\item Team Lead of a backend project for file synchronization and sharing platform
+		\item Data aggregation, transformation and storage
+		\item Infrastructure management including deployment of new products, gathering performance metrics and application monitoring
+		\item Code maintanance and refactoring
+	}}
+	{\cvlist {
+		\item Scala, Spark
+		\item Akka, Play
+		\item Amazon Web Services, Microsoft Azure
+		\item Terraform, AWS Cloud formation
+	}}
+	{\cvlist{
+		\item Implemented GDPR data protection solution under constraint time limit
+		\item Significantly improved in-house EMR workflow system
+		\item Built a recommender service based on regression model and elastic search service
+    \item Product integration with the Azure cloud storage, including design and performance evaluation
+	}}
+
+\cvevent
+	{Aug 10 - Oct 15}
+  {Java / Scala Developer}
+	{Globallogic Inc.}
+	{GlobalLogic, a digital engineering leader, helps brands design and build innovative products, platforms, and digital experiences for the modern world.}
+	{\cvlist{
+		\item Requirements analysis and refinment with customer
+		\item Implementation of Rest/Web services
+    \item Unit \& Integration tests
+    \item Codebase maintanance and refactoring
+	}}
+	{\cvlist {
+		\item Java, Groovy, Scala
+		\item Spring, Hibernate, Akka, Spray 
+		\item Amazon Web Services
+		\item MySQL, Cassandra, SOLR
+	}}
+	{\cvlist{
+		\item Worked on a Graph DB engine based on Cassandra distributed database
+		\item Introduction of high-performance asynchronous HTTP backend code written with Akka Actor model 
+	}}
+
+% hotfixes to create fake-space to ensure the whole height is used
+%\mbox{}
+%\vfill
+%\mbox{}
+%\vfill
+%\mbox{}
+%\vfill
+%\mbox{}
+\end{rightcolumn}
+\end{paracol}
+\end{document}
+
