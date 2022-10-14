@@ -18,7 +18,7 @@ jobs:
     - name: Deploy
       uses: exuanbo/actions-deploy-gist@v1.1.4
       with:
-        token: ${{ secrets.GIST }}
+        token: ${{ secrets.GITHUB_TOKEN }}
         gist_id: 0c863d698db4797b36fb40efd4024296
         file_path: ./result
         gist_file_name: cv.pdf
