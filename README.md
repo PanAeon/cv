@@ -7,3 +7,9 @@
 ```sh
 nix build github:PanAeon/cv
 ```
+
+---
+Credits:
+- Code: [Build LaTeX Documents Reproducibly](https://flyx.org/nix-flakes-latex/)
+- Template: [jankapunkt/latexcv](https://github.com/jankapunkt/latexcv)
+- Github Workflow: [ysndr/cv](https://github.com/ysndr/cv)
