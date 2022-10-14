@@ -16,7 +16,7 @@ jobs:
           access-tokens = github.com=${{ secrets.GIST }}
     - run: nix build
     - name: Deploy
-      uses: exuanbo/actions-deploy-gist@v1
+      uses: exuanbo/actions-deploy-gist@v1.1.4
       with:
         token: ${{ secrets.GIST }}
         gist_id: 0c863d698db4797b36fb40efd4024296
