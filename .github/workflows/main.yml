@@ -44,7 +44,7 @@ jobs:
             git add .
             git commit -m "Update gist to track commit PanAeon/cv@$commit"
             git rebase HEAD main
-            git push
+            git push --repo="https://panaeon:${{secrets.GITHUB_TOKEN}}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
             popd
             git add public
             git commit -m "(Public) updated gist"
