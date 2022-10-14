@@ -22,7 +22,7 @@ jobs:
             git config submodule.public.url "https://PanAeon:${{secrets.GITHUB_TOKEN}}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
             git config submodule.public.branch main
             git submodule update --init --remote --merge
-            git checkout ${GITHUB_REF##*/}
+            #git checkout ${GITHUB_REF##*/}
     - name: Compile CV
       run: nix build
     #- name: Deploy
@@ -35,10 +35,20 @@ jobs:
     #    file_type: binary
     - name: Push CV
       run: |
-            pushd public
-            git status
-            popd
+            ls
             cp result public/cv.pdf
+            git status
+            set -ex
+            commit=$(git log -1 --abbrev-commit --oneline | cut -f1 -d " ")
+            pushd public
+            git add .
+            git commit -m "Update gist to track commit PanAeon/cv@$commit"
+            git rebase HEAD main
+            git push
+            popd
+            git add public
+            git commit -m "(Public) updated gist"
+            echo "Done!"
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
