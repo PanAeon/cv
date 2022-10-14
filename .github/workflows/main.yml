@@ -20,7 +20,7 @@ jobs:
             git config --global user.name "cv-builder"
             git config --global user.email "vitalii.voloshyn+cv@gmail.com"
             git config submodule.public.url "https://PanAeon:${{secrets.GITHUB_TOKEN}}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
-            git config submodule.public.branch master
+            git config submodule.public.branch main
             git submodule update --init --remote --merge
             git checkout ${GITHUB_REF##*/}
     - name: Compile CV
