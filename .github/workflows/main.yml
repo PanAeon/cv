@@ -1,0 +1,26 @@
+name: "Compile CV and Upload"
+
+on:
+  push
+
+jobs:
+  build-and-deploy:
+    if: "contains(github.event.head_commit.message, '>build')"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Install Nix
+      uses: cachix/install-nix-action@v18
+      with:
+        extra_nix_config: |
+          access-tokens = github.com=${{ secrets.GIST }}
+    - run: nix build
+    - name: Deploy
+      uses: exuanbo/actions-deploy-gist@v1
+      with:
+        token: ${{ secrets.GIST }}
+        gist_id: 0c863d698db4797b36fb40efd4024296
+        file_path: ./result
+        gist_file_name: cv.pdf
+        file_type: binary
+      file_type: binary
