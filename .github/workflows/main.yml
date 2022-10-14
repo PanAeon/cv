@@ -14,12 +14,32 @@ jobs:
       with:
         extra_nix_config: |
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - run: nix build
-    - name: Deploy
-      uses: exuanbo/actions-deploy-gist@v1.1.3
+    - name: Setup Git
+      run: |
+            echo Setting up git user config...
+            git config --global user.name "cv-builder"
+            git config --global user.email "vitalii.voloshyn+cv@gmail.com"
+            git config submodule.public.url "https://PanAeon:${{secrets.GITHUB_TOKEN}}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
+            git config submodule.public.branch master
+            git submodule update --init --remote --merge
+            git checkout ${GITHUB_REF##*/}
+    - name: Compile CV
+      run: nix build
+    #- name: Deploy
+    #  uses: exuanbo/actions-deploy-gist@v1.1.3
+    #  with:
+    #    token: ${{ secrets.GITHUB_TOKEN }}
+    #    gist_id: 0c863d698db4797b36fb40efd4024296
+    #    file_path: ./result
+    #    gist_file_name: cv.pdf
+    #    file_type: binary
+    - name: Push CV
+      run: |
+            pushd public
+            git status
+            popd
+            cp result public/cv.pdf
+    - name: Push changes
+      uses: ad-m/github-push-action@master
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        gist_id: 0c863d698db4797b36fb40efd4024296
-        file_path: ./result
-        gist_file_name: cv.pdf
-        file_type: binary
+        github_token: ${{ secrets.GITHUB_TOKEN }}
