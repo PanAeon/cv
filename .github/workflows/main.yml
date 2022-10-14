@@ -23,4 +23,3 @@ jobs:
         file_path: ./result
         gist_file_name: cv.pdf
         file_type: binary
-      file_type: binary
