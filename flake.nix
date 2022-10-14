@@ -34,6 +34,7 @@
         };
 
         source = ./cv.tex;
+        qr-code = ./qrcode.png;
 
         build-cv = pkgs.writeShellScriptBin "build-cv" ''
            export FONTCONFIG_FILE=${fonts}
@@ -71,6 +72,7 @@
             phases = [ "buildPhase" "installPhase" ];
 
             buildPhase = ''
+              cp ${qr-code} qrcode.png
               ${build-cv}/bin/build-cv "" ${source}
             '';
 

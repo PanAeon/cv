@@ -19,7 +19,7 @@ jobs:
             echo Setting up git user config...
             git config --global user.name "cv-builder"
             git config --global user.email "vitalii.voloshyn+cv@gmail.com"
-            git config submodule.public.url "https://PanAeon:${{secrets.GITHUB_TOKEN}}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
+            git config submodule.public.url "https://panaeon:${{ secrets.GITHUB_TOKEN }}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
             git config submodule.public.branch main
             git submodule update --init --remote --merge
             #git checkout ${GITHUB_REF##*/}
@@ -35,16 +35,13 @@ jobs:
     #    file_type: binary
     - name: Push CV
       run: |
-            ls
             cp result public/cv.pdf
-            git status
-            set -ex
             commit=$(git log -1 --abbrev-commit --oneline | cut -f1 -d " ")
             pushd public
             git add .
             git commit -m "Update gist to track commit PanAeon/cv@$commit"
             git rebase HEAD main
-            git push --repo="https://panaeon:${{secrets.GITHUB_TOKEN}}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
+            git push --repo="https://panaeon:${{ secrets.GITHUB_TOKEN }}@gist.github.com/0c863d698db4797b36fb40efd4024296.git"
             popd
             git add public
             git commit -m "(Public) updated gist"
